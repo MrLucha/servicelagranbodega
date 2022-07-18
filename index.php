@@ -37,15 +37,12 @@ foreach ($lista_productos as $p) {
 
     //Se hace el scrap con el link del producto
     $newPrice=floatval(scrapProducts($link));
-    //scrapProductsTest($link);
 
     //Se evalua si el precio es diferente al de la BD
     if ($price!=$newPrice) {
         //Si es diferente, se ejecuta la funcion updatePrice
         updatePrice($newPrice,$idList,$idProduct);
     }else{
-        // echo('<br>');
-        // echo("no es diferente");
     }
 
     //Fin de un producto
@@ -55,12 +52,7 @@ foreach ($lista_productos as $p) {
 
 //Cerrar conexion a la BD
 $conexion->close();
-//scrapProductsTest();
 
-
-function init(){
-
-}
 
 
 function scrapProducts($link){
@@ -90,8 +82,6 @@ function scrapProducts($link){
     $eliminar = array("\t", "$", " ");
     $precio_producto = str_replace ( $eliminar, '', $precio_producto);
     return $precio_producto;
-
-// return json_encode($GLOBALS["array_productos"],JSON_UNESCAPED_UNICODE);
 }
 
 function updatePrice($newPrice,$idList,$idProduct){
@@ -109,34 +99,5 @@ function updatePrice($newPrice,$idList,$idProduct){
     }
 }
 
-
-function scrapProductsTest(){
-    $price='';
-    $precio_producto='';
-    //igualar url a link del objeto
-    $url='https://www.lagranbodega.com.mx/locion-neutrogena-limp-deep-clean-astringente-200-ml/p';
-    $html=file_get_html($url);
-
-    $buscador = $html->find('.skuListPrice');
-    foreach ($buscador as $b) {
-        $price=$b->text();
-    }
-
-    if ($price!='$0.00') {
-        //Si hay promo, el precio sin descuento se puede obtener apunando a .skuListPrice
-        //echo("si hay promo");
-    }else{
-        //echo("no hay promo");
-    }
-
-    $precio = $html->find('.skuBestPrice');
-    foreach ($precio as $p) {
-        $precio_producto=$p->text();
-    }
-    $eliminar = array("\t", "$", " ");
-    $precio_producto = str_replace ( $eliminar, '', $precio_producto);
-    var_dump($precio_producto);
-    //return $precio_producto;
-}
 
 ?>
